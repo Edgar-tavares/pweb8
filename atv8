@@ -1,0 +1,89 @@
+function matrizQuadradaMagica() {
+    console.log("Quantidade de Parâmetros: " + arguments.length);
+
+    // Verifica se todos os parâmetros são números
+    for (var i = 0; i < arguments.length; i++) {
+        if (isNaN(arguments[i])) {
+            console.log("O parâmetro de número " + (i + 1) + " não é um número");
+            return false;
+        }
+    }
+
+    // Calcula a raiz quadrada da quantidade de parâmetros
+    var calc = Math.sqrt(arguments.length);
+
+    // Transforma a raiz em um número inteiro para comparação
+    var calc2 = Math.round(calc);
+
+    // Compara a raiz com o número inteiro obtido
+    if (calc != calc2) {
+        console.log("A raiz quadrada do tamanho da matriz (" + calc + ") não é um número inteiro.");
+        return false;
+    }
+
+    console.log("Número de linhas e colunas: " + calc);
+
+    // Transforma os parâmetros em uma matriz quadrada
+    var matriz = [];
+    var arr = [];
+    var cont = 0;
+    var cont2 = 0;
+
+    for (var i = 0; i < arguments.length; i++) {
+        if (cont < calc) {
+            arr[cont] = arguments[i];
+            cont++;
+        }
+        if (cont == calc) {
+            matriz[cont2] = arr.slice();
+            arr = [];
+            cont2++;
+            cont = 0;
+        }
+    }
+
+    console.log("Matriz: " + matriz.map(row => row.join(', ')).join('\n'));
+
+    // Calcula a soma das linhas, colunas e diagonais
+    var m = matriz;
+    var somad = 0;
+    var somad2 = 0;
+    var somal = new Array(m.length).fill(0);
+    var somac = new Array(m.length).fill(0);
+    var retorno = true;
+
+    for (var i = 0; i < m.length; i++) {
+        somad += m[i][i];
+        for (var j = 0; j < m[0].length; j++) {
+            somal[i] += m[i][j];
+            somac[j] += m[i][j];
+        }
+        if (somal[i] != somac[i]) {
+            retorno = false;
+            break;
+        }
+    }
+
+    // Calcula a soma da diagonal secundária
+    for (var i = m.length - 1; i >= 0; i--) {
+        somad2 += m[i][i];
+    }
+
+    console.log("Soma da Linha e Coluna: " + somal.join(', '));
+    console.log("Soma da Diagonal Principal: " + somad);
+    console.log("Soma da Diagonal Secundária: " + somad2);
+
+    // Verifica se as somas das diagonais são iguais
+    if (somal[0] !== somad || somad !== somad2) {
+        retorno = false;
+    }
+
+    // Retorna se é uma matriz quadrada mágica ou não
+    return retorno;
+}
+
+// Exemplos de chamada da função
+console.log(matrizQuadradaMagica(2, 7, 6, 9, 5, 1, 4, 3, 8));
+console.log(matrizQuadradaMagica(2, 3, 4, 9, 3, 1, 1, 3, 3));
+console.log(matrizQuadradaMagica(1, 1, 1, 1, 1, 1, 1, 1, 1));
+console.log(matrizQuadradaMagica(1, 7, 1, 3, 1, 56, 1, 1, 1, 1, 1, 1, 1, 5, 1, 1, 3));
